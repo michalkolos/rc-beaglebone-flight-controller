@@ -1,0 +1,14 @@
+//
+// Created by kolos on 7/20/20.
+//
+
+#ifndef RC_BEAGLEBONE_FLIGHT_CONTROLLER_GPS_H
+#define RC_BEAGLEBONE_FLIGHT_CONTROLLER_GPS_H
+
+
+class Gps {
+
+};
+
+
+#endif //RC_BEAGLEBONE_FLIGHT_CONTROLLER_GPS_H
