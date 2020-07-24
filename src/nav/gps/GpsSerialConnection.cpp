@@ -4,17 +4,17 @@
 
 #include "GpsSerialConnection.h"
 
-GpsSerialConnection::GpsSerialConnection(const std::string &interfaceFilePath,
-     int baudRate, int parityBit, int stopBits, int hardwareFlowControl,
-     int bitsPerByte) :
-        SerialConnection(interfaceFilePath, baudRate, parityBit, stopBits,
-                         hardwareFlowControl, bitsPerByte) {
+GpsSerialConnection::GpsSerialConnection(CraftState& craftState,
+     const std::string &interfaceFilePath, int baudRate, bool startWorker, int parityBit,
+     int stopBits, int hardwareFlowControl, int bitsPerByte) :
+        SerialConnection(craftState, interfaceFilePath, baudRate, startWorker, parityBit,
+            stopBits, hardwareFlowControl, bitsPerByte) {
 
 }
 
-void GpsSerialConnection::read(GpsData& gpsData) {
+void GpsSerialConnection::read() {
     std::string incomingData = readSerialLine();
-    NmeaParser::parseMessage(incomingData, gpsData);
+    NmeaParser::parseMessage(incomingData, craftState.getGpsData());
 }
 
 

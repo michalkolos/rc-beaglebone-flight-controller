@@ -57,8 +57,12 @@ bool NmeaParser::checksumValidate(std::string &rawLine) {
     }
 
     std::string checksumString = rawLine.substr(checksumPos + 1, checksumEnd - checksumPos - 1);
-
-    int checksum = std::stoi(checksumString, nullptr, 16);
+    int checksum;
+    try {
+        checksum = std::stoi(checksumString, nullptr, 16);
+    } catch (std::exception e) {
+        return false;
+    }
 
     rawLine.erase(checksumPos, checksumEnd - 1);
 

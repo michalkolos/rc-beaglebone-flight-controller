@@ -19,17 +19,21 @@ int main() {
 //    SerialConnection serialConnection("/dev/ttyO2", B115200);
 //    SerialData serialData;
 
-    GpsSerialConnection gpsSerialConnection("/dev/ttyO2", B115200);
-    GpsData gpsData;
+    CraftState craftState;
+    GpsSerialConnection gpsSerialConnection(craftState,
+            "/dev/ttyO2", B115200, true);
+//    GpsData gpsData;
 
 //    NmeaParser nmeaParser;
 
     while(true){
 
-        gpsSerialConnection.read(gpsData);
+//        gpsSerialConnection.read();
+        GpsData gpsData = craftState.getGpsData();
+
         std::cout << gpsData.toString() << std::endl;
 
-
+        sleep(1);
 
 //        serialConnection.read(serialData);
 //        std::cout << serialData.toString() << std::endl;

@@ -15,14 +15,16 @@ class GpsSerialConnection : public SerialConnection{
 
 public:
 
-    GpsSerialConnection(const std::string& interfaceFilePath,
+    GpsSerialConnection(CraftState& craftState,
+                     const std::string& interfaceFilePath,
                      int baudRate,
+                     bool startWorker,
                      int parityBit = 0,
                      int stopBits = 0,
                      int hardwareFlowControl = 0,
                      int bitsPerByte = 8);
 
-    void read(GpsData& gpsData);
+    void read() override;
 };
 
 

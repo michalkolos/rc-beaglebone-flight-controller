@@ -8,23 +8,26 @@
 
 #include "GpsData.h"
 #include "CompassData.h"
+#include "SerialData.h"
 
 class CraftState {
 private:
-    GpsData* gpsData = nullptr;
-    CompassData* compassData = nullptr;
+    SerialData serialData;
+    GpsData gpsData;
+    CompassData compassData;
 
 public:
+    SerialData &getSerialData();
 
-    virtual ~CraftState();
+    void setSerialData(const SerialData &serialData);
 
-    GpsData *getGpsData() const;
+    GpsData &getGpsData();
 
-    void setGpsData(GpsData *gpsData);
+    void setGpsData(const GpsData &gpsData);
 
-    CompassData *getCompassData() const;
+    CompassData &getCompassData();
 
-    void setCompassData(CompassData *compassData);
+    void setCompassData(const CompassData &compassData);
 };
 
 

@@ -5,12 +5,14 @@
 #include "SerialConnection.h"
 
 
-SerialConnection::SerialConnection(const std::string &interfaceFilePath,
+SerialConnection::SerialConnection(CraftState& craftState,
+               const std::string &interfaceFilePath,
                int baudRate,
+               bool startWorker,
                int parityBit,
                int stopBits,
                int hardwareFlowControl,
-               int bitsPerByte){
+               int bitsPerByte) : craftState(craftState){
 
     fileDescriptor = open(interfaceFilePath.c_str(), O_RDWR);
 
@@ -95,8 +97,8 @@ SerialConnection::SerialConnection(const std::string &interfaceFilePath,
 
 
 //    An important point to note is that VTIME means slightly different things depending on what VMIN is. When VMIN is 0,
-//    VTIME specifies a time-out from the start of the read() call. But when VMIN is > 0, VTIME specifies the time-out
-//    from the start of the first received character.
+//    VTIME specifies a time-out from the startThread of the read() call. But when VMIN is > 0, VTIME specifies the time-out
+//    from the startThread of the first received character.
 //
 //    VMIN = 0, VTIME = 0: No blocking, return immediately with what is available
 //
@@ -135,6 +137,14 @@ SerialConnection::SerialConnection(const std::string &interfaceFilePath,
     if (tcsetattr(fileDescriptor, TCSANOW, &tty) != 0) {
         std::cout << "Error " << errno << " from tcsetattr: " << strerror(errno) << std::endl;
     }
+
+    if(startWorker) { startThread(); }
+}
+
+
+SerialConnection::~SerialConnection() {
+    stopThread();
+    workerThread.join();
 }
 
 
@@ -183,10 +193,9 @@ std::string SerialConnection::readSerialLine() const {
 }
 
 
-void SerialConnection::read(SerialData &serialData) {
+void SerialConnection::read() {
     std::string incomingString = readSerialLine();
-
-    serialData.record(incomingString);
+    craftState.getSerialData().record(incomingString);
 }
 
 
@@ -201,6 +210,28 @@ void SerialConnection::write(const std::string& writeString) const {
         std::cout << "Error " << errno << " from write: " << strerror(errno) << std::endl;
     }
 }
+
+bool SerialConnection::startThread() {
+    if(threadRunning) { return false; }
+
+    workerThread = std::thread(&SerialConnection::workerFunction, this);
+    threadRunning = true;
+
+    return true;
+}
+
+bool SerialConnection::stopThread() {
+
+    threadRunning = false;
+
+    return true;
+}
+
+void SerialConnection::workerFunction() {
+    while(threadRunning){ read(); }
+}
+
+
 
 
 
