@@ -16,7 +16,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <vector>
-
+#include "../data/CraftState.h"
 
 
 class Compass {
@@ -24,8 +24,11 @@ private:
     int fileDescriptor;
 
 public:
-    Compass(std::string deviceFileName, int i2cAddress);
-    std::vector<int> measure();
+    Compass(const std::string& deviceFileName, int i2cAddress);
+
+    
+
+    CompassData measure();
     void test();
 
 };

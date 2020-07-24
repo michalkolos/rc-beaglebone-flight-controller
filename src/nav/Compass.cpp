@@ -69,7 +69,9 @@ void Compass::test() {
     }
 }
 
-Compass::Compass(std::string deviceFileName, int i2cAddress) {
+
+Compass::Compass(const std::string& deviceFileName, int i2cAddress){
+
 
     // Create I2C bus
     if ((fileDescriptor = open(deviceFileName.c_str(), O_RDWR)) < 0){
@@ -95,7 +97,7 @@ Compass::Compass(std::string deviceFileName, int i2cAddress) {
 
 }
 
-std::vector<int> Compass::measure() {
+CompassData Compass::measure() {
 
     // Read 6 bytes of data from register(0x03)
     // xMag msb, xMag lsb, zMag msb, zMag lsb, yMag msb, yMag lsb
@@ -124,10 +126,12 @@ std::vector<int> Compass::measure() {
             yMag -= 65536;
         }
 
-        magneticVector.push_back(xMag);
-        magneticVector.push_back(yMag);
-        magneticVector.push_back(zMag);
+        return {xMag, yMag, zMag};
     }
 
-    return magneticVector;
+    return {0, 0, 0};
 }
+
+
+
+
