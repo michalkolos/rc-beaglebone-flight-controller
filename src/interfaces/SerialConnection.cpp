@@ -21,13 +21,19 @@ SerialConnection::SerialConnection(CraftState& craftState,
     }
 
     //  Create configuration structure
-    struct termios tty;
+    struct termios2 tty;
     memset(&tty, 0, sizeof tty);
 
-    //  Read in existing settings, and handle any error
-    if(tcgetattr(fileDescriptor, &tty) != 0) {
-        std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
+//      Read in existing settings, and handle any error
+//    if(tcgetattr(fileDescriptor, &tty) != 0) {
+//        std::cout << "Error " << errno << " from tcgetattr: " << strerror(errno) << std::endl;
+//    }
+
+    errno = 0;
+    if(ioctl(fileDescriptor, TCGETS2, &tty)){
+        std::cerr << "Error" << errno << "from ioctl TCGETS2: " << strerror(errno) << std::endl;
     }
+
 
     //  Parity bit:
     if(parityBit == 0){
@@ -127,16 +133,27 @@ SerialConnection::SerialConnection(CraftState& craftState,
 
 
     //  Baud Rate
+    tty.c_cflag &= ~CBAUD;
+    tty.c_cflag |= BOTHER;
+    tty.c_ispeed = baudRate;
+    tty.c_ospeed = baudRate;
 
-    // Specifying a custom baud rate when using GNU C
-    cfsetispeed(&tty, baudRate);
-    cfsetospeed(&tty, baudRate);
+//    tty.c_ispeed = tty.c_ospeed = baudRate;
+
+//    // Specifying a custom baud rate when using GNU C
+//    cfsetispeed(&tty, baudRate);
+//    cfsetospeed(&tty, baudRate);
 
 
     // Save tty settings, also checking for error
-    if (tcsetattr(fileDescriptor, TCSANOW, &tty) != 0) {
-        std::cout << "Error " << errno << " from tcsetattr: " << strerror(errno) << std::endl;
+//    if (tcsetattr(fileDescriptor, TCSANOW, &tty) != 0) {
+//        std::cout << "Error " << errno << " from tcsetattr: " << strerror(errno) << std::endl;
+//    }
+
+    if(ioctl(fileDescriptor, TCSETS2, &tty)){
+        std::cerr << "Error" << errno << "from ioctl TCSETS2: " << strerror(errno) << std::endl;
     }
+
 
     if(startWorker) { startThread(); }
 }
@@ -193,6 +210,7 @@ std::string SerialConnection::readSerialLine() const {
 }
 
 
+
 void SerialConnection::read() {
     std::string incomingString = readSerialLine();
     craftState.getSerialData().record(incomingString);
@@ -229,6 +247,14 @@ bool SerialConnection::stopThread() {
 
 void SerialConnection::workerFunction() {
     while(threadRunning){ read(); }
+}
+
+CraftState &SerialConnection::getCraftState() const {
+    return craftState;
+}
+
+void SerialConnection::setCraftState(CraftState &craftState) {
+    SerialConnection::craftState = craftState;
 }
 
 

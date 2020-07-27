@@ -6,15 +6,18 @@
 #define RC_BEAGLEBONE_FLIGHT_CONTROLLER_CRAFTSTATE_H
 
 
+#include <mutex>
 #include "GpsData.h"
 #include "CompassData.h"
 #include "SerialData.h"
+#include "SbusData.h"
 
 class CraftState {
 private:
     SerialData serialData;
     GpsData gpsData;
     CompassData compassData;
+    SbusData sbusData;
 
 public:
     SerialData &getSerialData();
@@ -28,6 +31,10 @@ public:
     CompassData &getCompassData();
 
     void setCompassData(const CompassData &compassData);
+
+    SbusData &getSbusData();
+
+    void setSbusData(const SbusData &sbusData);
 };
 
 

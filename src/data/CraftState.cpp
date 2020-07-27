@@ -28,3 +28,11 @@ CompassData &CraftState::getCompassData(){
 void CraftState::setCompassData(const CompassData &compassData) {
     CraftState::compassData = compassData;
 }
+
+SbusData &CraftState::getSbusData(){
+    return sbusData;
+}
+
+void CraftState::setSbusData(const SbusData &sbusData) {
+    CraftState::sbusData = sbusData;
+}

@@ -2,9 +2,11 @@
 #include "src/nav/Compass.h"
 #include "src/nav/gps/NmeaParser.h"
 //#define PORTNAME "/dev/ttyO1"
-
+#include <ctime>
 #include "src/nav/gps/GpsSerialConnection.h"
 #include "src/interfaces/SerialConnection.h"
+#include "src/nav/sbus/SbusSerialConnection.h"
+#include "src/utils/Utils.h"
 
 
 const std::string COMPASS_DEVICE_FILE = "/dev/i2c-1";
@@ -20,20 +22,30 @@ int main() {
 //    SerialData serialData;
 
     CraftState craftState;
-    GpsSerialConnection gpsSerialConnection(craftState,
-            "/dev/ttyO2", B115200, true);
+//    GpsSerialConnection gpsSerialConnection(craftState,
+//            "/dev/ttyO1", 115200, true);
+
+    SbusSerialConnection sbusSerialConnection(craftState,
+            "/dev/ttyO2", true);
+
+//    sbusSerialConnection.debug();
+
 //    GpsData gpsData;
 
 //    NmeaParser nmeaParser;
 
     while(true){
 
+        std::cout << craftState.getSbusData().toString() << std::endl;
+        Utils::sleep_ms(100);
+
+
 //        gpsSerialConnection.read();
-        GpsData gpsData = craftState.getGpsData();
-
-        std::cout << gpsData.toString() << std::endl;
-
-        sleep(1);
+//        GpsData gpsData = craftState.getGpsData();
+//
+//        std::cout << gpsData.toString() << std::endl;
+//
+//        sleep(1);
 
 //        serialConnection.read(serialData);
 //        std::cout << serialData.toString() << std::endl;
@@ -58,3 +70,4 @@ int main() {
 
     return 0;
 }
+

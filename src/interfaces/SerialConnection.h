@@ -5,30 +5,55 @@
 #ifndef RC_BEAGLEBONE_FLIGHT_CONTROLLER_SERIALCONNECTION_H
 #define RC_BEAGLEBONE_FLIGHT_CONTROLLER_SERIALCONNECTION_H
 
-#include <stdio.h>
+//#include <stdio.h>
 #include <string.h>
-#include <iostream>
-#include <string>
+//#include <iostream>
+//#include <string>
 
 // Linux headers
 #include <fcntl.h> // Contains file controls like O_RDWR
 #include <cerrno> // Error integer and strerror() function
-#include <termios.h> // Contains POSIX terminal control definitions
+//#include <termios.h> // Contains POSIX terminal control definitions
 #include <unistd.h> // write(), read(), close()
 #include <thread>
 #include "../data/SerialData.h"
 #include "../data/CraftState.h"
 
+#include <stdlib.h>
+#include <stdarg.h>
+#include <sys/ioctl.h>
+
+#include <iostream>
+#include <iomanip>
+#include <cstring>
+#include <cstdio>
+#include <cinttypes>
+#include <utility>
+#include <asm/ioctls.h>
+#include <asm/termbits.h>
+#include <sys/ioctl.h>
+#include <algorithm>
+
+
+
+
+
 class SerialConnection {
 private:
-    int fileDescriptor;
     std::thread workerThread;
     bool threadRunning = false;
 
 protected:
     CraftState& craftState;
+    int fileDescriptor;
     void workerFunction();
     std::string readSerialLine() const;
+
+public:
+    CraftState &getCraftState() const;
+    void setCraftState(CraftState &craftState);
+
+protected:
 
     bool startThread();
     bool stopThread();
