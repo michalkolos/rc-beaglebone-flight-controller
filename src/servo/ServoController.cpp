@@ -3,3 +3,6 @@
 //
 
 #include "ServoController.h"
+
+ServoController::ServoController(bool startWorker, CraftState &craftState) :
+    WorkerThread(startWorker), craftState(craftState) {}

@@ -13,8 +13,9 @@
 class SbusData : public GenericData {
 
 private:
-
     static const uint8_t _numChannels = 20;
+
+
 
     /**
      * an Array of integers that holds decoded data. Must have the
@@ -28,6 +29,9 @@ private:
 
 
 public:
+    SbusData() = default;
+    explicit SbusData(const std::string &tag);
+
     std::string toString();
     std::array<uint16_t, _numChannels> &getChannels();
 

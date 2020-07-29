@@ -10,11 +10,14 @@ GpsSerialConnection::GpsSerialConnection(CraftState& craftState,
         SerialConnection(craftState, interfaceFilePath, baudRate, startWorker, parityBit,
             stopBits, hardwareFlowControl, bitsPerByte) {
 
+    gpsData = new GpsData(DATA_TAG);
+    registerNewData(gpsData);
+
 }
 
 void GpsSerialConnection::read() {
     std::string incomingData = readSerialLine();
-    NmeaParser::parseMessage(incomingData, craftState.getGpsData());
+    NmeaParser::parseMessage(incomingData, gpsData);
 }
 
 

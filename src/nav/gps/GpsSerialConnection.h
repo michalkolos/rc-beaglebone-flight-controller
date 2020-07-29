@@ -13,6 +13,11 @@
 
 class GpsSerialConnection : public SerialConnection{
 
+private:
+    const std::string DATA_TAG = "GPS";
+
+    GpsData* gpsData;
+
 public:
 
     GpsSerialConnection(CraftState& craftState,

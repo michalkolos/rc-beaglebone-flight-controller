@@ -10,6 +10,9 @@ SbusSerialConnection::SbusSerialConnection(CraftState &craftState,
         SerialConnection(craftState, interfaceFilePath, 100000,
             startWorker, 1,1, 0, 8) {
 
+    sbusData = new SbusData(DATA_TAG);
+
+    registerNewData(sbusData);
 }
 
 void SbusSerialConnection::read() {
@@ -53,9 +56,11 @@ bool SbusSerialConnection::readSbusFrame() {
 
 bool SbusSerialConnection::sbusParse() {
 
-//    channelsMutex.lock();
 
-    std::array<uint16_t, _numChannels>& channels = craftState.getSbusData().getChannels();
+//    sbusData->getExclusiveAccess();
+//    std::array<uint16_t, _numChannels>& channels = sbusData->getChannels();
+
+    std::array<uint16_t, _numChannels> channels;
 
     channels[0]  = (uint16_t) ((frame[0]       | frame[1] << 8)                     & 0x07FF);
     channels[1]  = (uint16_t) ((frame[1] >> 3  | frame[2] << 5)                     & 0x07FF);
@@ -103,25 +108,11 @@ bool SbusSerialConnection::sbusParse() {
     }
 
 //    channelsMutex.unlock();
-
-    craftState.getSbusData().setChannels(channels);
-
+//    sbusData->releaseExclusiveAccess();
+    sbusData->setChannels(channels);
     return true;
 }
 
-
-void SbusSerialConnection::sbusPrint() {
-
-//    channelsMutex.lock();
-    std::array<uint16_t, _numChannels>& channels = craftState.getSbusData().getChannels();
-
-    for(unsigned short channel : channels){
-        std::cout << std::setw(5) << channel << " ";
-    }
-//    channelsMutex.unlock();
-
-    std::cout << std::endl;
-}
 
 void SbusSerialConnection::debug() {
     char byteBuffer[1];

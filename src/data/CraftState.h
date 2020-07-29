@@ -7,6 +7,7 @@
 
 
 #include <mutex>
+#include <vector>
 #include "GpsData.h"
 #include "CompassData.h"
 #include "SerialData.h"
@@ -14,12 +15,23 @@
 
 class CraftState {
 private:
+    std::mutex accessMutex;
+    std::vector<GenericData* > dataBank;
+
     SerialData serialData;
     GpsData gpsData;
     CompassData compassData;
     SbusData sbusData;
 
 public:
+    CraftState();
+
+    unsigned int registerData(GenericData* newData);
+    GenericData* getDataByTag(std::string tag);
+    GenericData* getDataById(unsigned int id);
+
+
+
     SerialData &getSerialData();
 
     void setSerialData(const SerialData &serialData);

@@ -6,7 +6,14 @@
 #define RC_BEAGLEBONE_FLIGHT_CONTROLLER_SERVOCONTROLLER_H
 
 
-class ServoController {
+#include "../worker/WorkerThread.h"
+#include "../data/CraftState.h"
+
+class ServoController : public WorkerThread{
+private:
+    CraftState& craftState;
+public:
+    ServoController(bool startWorker, CraftState &craftState);
 
 };
 

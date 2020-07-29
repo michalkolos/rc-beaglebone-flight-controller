@@ -18,6 +18,7 @@
 #include <thread>
 #include "../data/SerialData.h"
 #include "../data/CraftState.h"
+#include "../worker/WorkerThread.h"
 
 #include <stdlib.h>
 #include <stdarg.h>
@@ -38,25 +39,18 @@
 
 
 
-class SerialConnection {
+class SerialConnection : public WorkerThread{
 private:
-    std::thread workerThread;
-    bool threadRunning = false;
+
+    void task() override;
 
 protected:
     CraftState& craftState;
     int fileDescriptor;
-    void workerFunction();
+
+    unsigned int registerNewData(GenericData* newData);
     std::string readSerialLine() const;
 
-public:
-    CraftState &getCraftState() const;
-    void setCraftState(CraftState &craftState);
-
-protected:
-
-    bool startThread();
-    bool stopThread();
 
 public:
     SerialConnection(CraftState& craftState,
@@ -68,7 +62,6 @@ public:
            int hardwareFlowControl = 0,
            int bitsPerByte = 8);
 
-    virtual ~SerialConnection();
 
     void write(const std::string& writeString) const;
 

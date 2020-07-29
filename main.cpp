@@ -22,8 +22,8 @@ int main() {
 //    SerialData serialData;
 
     CraftState craftState;
-//    GpsSerialConnection gpsSerialConnection(craftState,
-//            "/dev/ttyO1", 115200, true);
+    GpsSerialConnection gpsSerialConnection(craftState,
+            "/dev/ttyO1", 115200, true);
 
     SbusSerialConnection sbusSerialConnection(craftState,
             "/dev/ttyO2", true);
@@ -34,9 +34,14 @@ int main() {
 
 //    NmeaParser nmeaParser;
 
+    SbusData* sbusData = (SbusData*)craftState.getDataByTag("SBUS");
+    GpsData* gpsData = (GpsData*)craftState.getDataByTag("GPS");
+
+
     while(true){
 
-        std::cout << craftState.getSbusData().toString() << std::endl;
+        std::cout << sbusData->toString() << std::endl;
+        std::cout << gpsData->toString() << std::endl;
         Utils::sleep_ms(100);
 
 

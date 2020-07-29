@@ -4,18 +4,24 @@
 
 #include "SbusData.h"
 
+SbusData::SbusData(const std::string &tag) : GenericData(tag) {}
+
+
 std::array<uint16_t, SbusData::_numChannels> &SbusData::getChannels(){
     return channels;
 }
 
 void SbusData::setChannels(const std::array<uint16_t, _numChannels> &channels) {
+    accessMutex.lock();
     SbusData::channels = channels;
-    setTimestampNow();
+    accessMutex.unlock();
 }
 
 std::string SbusData::toString() {
     const int VALUE_LENGTH = 5;
     const char PADDING_SIGN = ' ';
+
+    accessMutex.lock();
 
     std::string returnString = GenericData::toString();
     std::string valueString;
@@ -29,5 +35,11 @@ std::string SbusData::toString() {
         returnString += valueString;
     }
 
+    accessMutex.unlock();
+
     return returnString;
 }
+
+
+
+

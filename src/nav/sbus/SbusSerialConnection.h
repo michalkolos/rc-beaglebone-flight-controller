@@ -11,6 +11,7 @@
 class SbusSerialConnection : public SerialConnection{
 
 private:
+    const std::string DATA_TAG = "SBUS";
 
     static const uint8_t _numChannels = 20;
     static const uint8_t _payloadSize = 24;
@@ -25,6 +26,7 @@ private:
     static const uint_fast8_t  FAILSAFE = 18;
     static const uint_fast8_t  LOST_FRAME = 19;
 
+    SbusData* sbusData;
 
     /**
      * an Array of integers that holds decoded data. Must have the
@@ -70,7 +72,6 @@ public:
             bool startWorker);
 
     void read() override;
-    void sbusPrint();
     void debug();
 };
 

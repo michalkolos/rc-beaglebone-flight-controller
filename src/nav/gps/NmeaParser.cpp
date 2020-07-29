@@ -5,7 +5,7 @@
 #include <cstring>
 #include "NmeaParser.h"
 
-void NmeaParser::parseMessage(std::string messageString, GpsData& gpsData) {
+void NmeaParser::parseMessage(std::string messageString, GpsData* gpsData) {
 
     if(!checksumValidate(messageString)){ return; }
     int messageType = detectMessageType(messageString);
@@ -69,45 +69,76 @@ bool NmeaParser::checksumValidate(std::string &rawLine) {
     return checksum == calculatedChecksum;
 }
 
-void NmeaParser::parseGga(std::string messageString, GpsData &gpsData) {
-    gpsData.setTimestampNow();
+void NmeaParser::parseGga(std::string messageString, GpsData* gpsData) {
+
+    GpsFields gpsFields = gpsData->getFields();
 
     try {
-        gpsData.setSatelliteTime((int) std::stof(extractField(messageString)) * 100);
-        gpsData.setLatitude(std::stof(extractField(messageString)));
-        gpsData.setLatDirection(extractField(messageString)[0]);
-        gpsData.setLongitude(std::stof(extractField(messageString)));
-        gpsData.setLonDirection(extractField(messageString)[0]);
+
+        gpsFields.satelliteTime = (int) std::stof(extractField(messageString)) * 100;
+        gpsFields.latitude = std::stof(extractField(messageString));
+        gpsFields.latDirection = extractField(messageString)[0];
+        gpsFields.longitude = std::stof(extractField(messageString));
+        gpsFields.lonDirection = extractField(messageString)[0];
         extractField(messageString);
-        gpsData.setNumberOfSatellitesUsed(std::stoi(extractField(messageString)));
-        gpsData.setHdop(std::stof(extractField(messageString)));
-        gpsData.setAltitudeAmsl(std::stof(extractField(messageString)));
+        gpsFields.numberOfSatellitesUsed = std::stoi(extractField(messageString));
+        gpsFields.hdop = std::stof(extractField(messageString));
+        gpsFields.altitudeAmsl = std::stof(extractField(messageString));
         extractField(messageString);
-        gpsData.setGeoidSeparation(std::stof(extractField(messageString)));
+        gpsFields.geoidSeparation = std::stof(extractField(messageString));
+
+//        gpsData.setSatelliteTime((int) std::stof(extractField(messageString)) * 100);
+//        gpsData.setLatitude(std::stof(extractField(messageString)));
+//        gpsData.setLatDirection(extractField(messageString)[0]);
+//        gpsData.setLongitude(std::stof(extractField(messageString)));
+//        gpsData.setLonDirection(extractField(messageString)[0]);
+//        extractField(messageString);
+//        gpsData.setNumberOfSatellitesUsed(std::stoi(extractField(messageString)));
+//        gpsData.setHdop(std::stof(extractField(messageString)));
+//        gpsData.setAltitudeAmsl(std::stof(extractField(messageString)));
+//        extractField(messageString);
+//        gpsData.setGeoidSeparation(std::stof(extractField(messageString)));
 
     } catch (std::exception& e) {
 //        std::cout << "Exception in parsing NMEA GGA message: " << e.what() << std::endl;
     }
+
+    gpsData->setFields(gpsFields);
 }
 
 // TODO: Parsing some of the fields might be redundant as no new information is conveyed.
-void NmeaParser::parseRmc(std::string messageString, GpsData &gpsData) {
-    gpsData.setTimestampNow();
+void NmeaParser::parseRmc(std::string messageString, GpsData* gpsData) {
+
+    GpsFields gpsFields = gpsData->getFields();
 
     try {
-        gpsData.setSatelliteTime((int)std::stof(extractField(messageString)) * 100);
+
+        gpsFields.satelliteTime = (int)std::stof(extractField(messageString)) * 100;
         extractField(messageString); // TODO: Check NMEA message status field.
-        gpsData.setLatitude(std::stof(extractField(messageString)));
-        gpsData.setLatDirection(extractField(messageString)[0]);
-        gpsData.setLongitude(std::stof(extractField(messageString)));
-        gpsData.setLonDirection(extractField(messageString)[0]);
-        gpsData.setSpeedOverGround(std::stof(extractField(messageString)));
-        gpsData.setCourseOverGround(std::stof(extractField(messageString)));
-        gpsData.setDate(std::stoi(extractField(messageString)));
+        gpsFields.latitude = std::stof(extractField(messageString));
+        gpsFields.latDirection = extractField(messageString)[0];
+        gpsFields.longitude = std::stof(extractField(messageString));
+        gpsFields.lonDirection = extractField(messageString)[0];
+        gpsFields.speedOverGround = std::stof(extractField(messageString));
+        gpsFields.courseOverGround = std::stof(extractField(messageString));
+        gpsFields.date = std::stoi(extractField(messageString));
+
+
+//        gpsData.setSatelliteTime((int)std::stof(extractField(messageString)) * 100);
+//        extractField(messageString); // TODO: Check NMEA message status field.
+//        gpsData.setLatitude(std::stof(extractField(messageString)));
+//        gpsData.setLatDirection(extractField(messageString)[0]);
+//        gpsData.setLongitude(std::stof(extractField(messageString)));
+//        gpsData.setLonDirection(extractField(messageString)[0]);
+//        gpsData.setSpeedOverGround(std::stof(extractField(messageString)));
+//        gpsData.setCourseOverGround(std::stof(extractField(messageString)));
+//        gpsData.setDate(std::stoi(extractField(messageString)));
 
     } catch (std::exception& e) {
 //        std::cout << "Exception in parsing NMEA RMC message: " << e.what() << std::endl;
     }
+
+    gpsData->setFields(gpsFields);
 }
 
 

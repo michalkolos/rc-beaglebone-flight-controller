@@ -5,7 +5,6 @@
 #include "SerialData.h"
 
 void SerialData::record(std::string& newData) {
-    setTimestampNow();
     data = newData;
 }
 

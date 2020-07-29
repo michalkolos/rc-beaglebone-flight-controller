@@ -12,7 +12,9 @@ SerialConnection::SerialConnection(CraftState& craftState,
                int parityBit,
                int stopBits,
                int hardwareFlowControl,
-               int bitsPerByte) : craftState(craftState){
+               int bitsPerByte) :
+                    craftState(craftState),
+                    WorkerThread(startWorker) {
 
     fileDescriptor = open(interfaceFilePath.c_str(), O_RDWR);
 
@@ -154,14 +156,6 @@ SerialConnection::SerialConnection(CraftState& craftState,
         std::cerr << "Error" << errno << "from ioctl TCSETS2: " << strerror(errno) << std::endl;
     }
 
-
-    if(startWorker) { startThread(); }
-}
-
-
-SerialConnection::~SerialConnection() {
-    stopThread();
-    workerThread.join();
 }
 
 
@@ -229,32 +223,14 @@ void SerialConnection::write(const std::string& writeString) const {
     }
 }
 
-bool SerialConnection::startThread() {
-    if(threadRunning) { return false; }
 
-    workerThread = std::thread(&SerialConnection::workerFunction, this);
-    threadRunning = true;
 
-    return true;
+void SerialConnection::task() {
+    read();
 }
 
-bool SerialConnection::stopThread() {
-
-    threadRunning = false;
-
-    return true;
-}
-
-void SerialConnection::workerFunction() {
-    while(threadRunning){ read(); }
-}
-
-CraftState &SerialConnection::getCraftState() const {
-    return craftState;
-}
-
-void SerialConnection::setCraftState(CraftState &craftState) {
-    SerialConnection::craftState = craftState;
+unsigned int SerialConnection::registerNewData(GenericData* newData) {
+    return craftState.registerData(newData);
 }
 
 
