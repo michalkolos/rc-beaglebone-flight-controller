@@ -16,6 +16,7 @@ private:
 
 protected:
     virtual void task() = 0;
+    virtual void cleanup();
     bool startThread();
     bool stopThread();
 

@@ -62,22 +62,22 @@ bool SbusSerialConnection::sbusParse() {
 
     std::array<uint16_t, _numChannels> channels;
 
-    channels[0]  = (uint16_t) ((frame[0]       | frame[1] << 8)                     & 0x07FF);
-    channels[1]  = (uint16_t) ((frame[1] >> 3  | frame[2] << 5)                     & 0x07FF);
-    channels[2]  = (uint16_t) ((frame[2] >> 6  | frame[3] << 2 | frame[4] << 10)    & 0x07FF);
-    channels[3]  = (uint16_t) ((frame[4] >> 1  | frame[5] << 7)                     & 0x07FF);
-    channels[4]  = (uint16_t) ((frame[5] >> 4  | frame[6] << 4)                     & 0x07FF);
-    channels[5]  = (uint16_t) ((frame[6] >> 7  | frame[7] << 1 | frame[8] << 9)     & 0x07FF);
-    channels[6]  = (uint16_t) ((frame[8] >> 2  | frame[9] << 6)                     & 0x07FF);
-    channels[7]  = (uint16_t) ((frame[9] >> 5  | frame[10] << 3)                    & 0x07FF);
-    channels[8]  = (uint16_t) ((frame[11]      | frame[12] << 8)                    & 0x07FF);
-    channels[9]  = (uint16_t) ((frame[12] >> 3 | frame[13] << 5)                    & 0x07FF);
-    channels[10] = (uint16_t) ((frame[13] >> 6 | frame[14] << 2 | frame[15] << 10)  & 0x07FF);
-    channels[11] = (uint16_t) ((frame[15] >> 1 | frame[16] << 7)                    & 0x07FF);
-    channels[12] = (uint16_t) ((frame[16] >> 4 | frame[17] << 4)                    & 0x07FF);
-    channels[13] = (uint16_t) ((frame[17] >> 7 | frame[18] << 1 | frame[19] << 9)   & 0x07FF);
-    channels[14] = (uint16_t) ((frame[19] >> 2 | frame[20] << 6)                    & 0x07FF);
-    channels[15] = (uint16_t) ((frame[20] >> 5 | frame[21] << 3)                    & 0x07FF);
+    channels[0]  = (uint16_t) ((frame[0]       | frame[1] << 8)                     & 0x07FF) - 172;
+    channels[1]  = (uint16_t) ((frame[1] >> 3  | frame[2] << 5)                     & 0x07FF) - 172;
+    channels[2]  = (uint16_t) ((frame[2] >> 6  | frame[3] << 2 | frame[4] << 10)    & 0x07FF) - 172;
+    channels[3]  = (uint16_t) ((frame[4] >> 1  | frame[5] << 7)                     & 0x07FF) - 172;
+    channels[4]  = (uint16_t) ((frame[5] >> 4  | frame[6] << 4)                     & 0x07FF) - 172;
+    channels[5]  = (uint16_t) ((frame[6] >> 7  | frame[7] << 1 | frame[8] << 9)     & 0x07FF) - 172;
+    channels[6]  = (uint16_t) ((frame[8] >> 2  | frame[9] << 6)                     & 0x07FF) - 172;
+    channels[7]  = (uint16_t) ((frame[9] >> 5  | frame[10] << 3)                    & 0x07FF) - 172;
+    channels[8]  = (uint16_t) ((frame[11]      | frame[12] << 8)                    & 0x07FF) - 172;
+    channels[9]  = (uint16_t) ((frame[12] >> 3 | frame[13] << 5)                    & 0x07FF) - 172;
+    channels[10] = (uint16_t) ((frame[13] >> 6 | frame[14] << 2 | frame[15] << 10)  & 0x07FF) - 172;
+    channels[11] = (uint16_t) ((frame[15] >> 1 | frame[16] << 7)                    & 0x07FF) - 172;
+    channels[12] = (uint16_t) ((frame[16] >> 4 | frame[17] << 4)                    & 0x07FF) - 172;
+    channels[13] = (uint16_t) ((frame[17] >> 7 | frame[18] << 1 | frame[19] << 9)   & 0x07FF) - 172;
+    channels[14] = (uint16_t) ((frame[19] >> 2 | frame[20] << 6)                    & 0x07FF) - 172;
+    channels[15] = (uint16_t) ((frame[20] >> 5 | frame[21] << 3)                    & 0x07FF) - 172;
 
 
 

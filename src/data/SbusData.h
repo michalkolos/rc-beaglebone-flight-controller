@@ -29,6 +29,9 @@ private:
 
 
 public:
+    static const uint16_t MIN_CH_VAL = 0;
+    static const uint16_t MAX_CH_VAL = 1639;
+
     SbusData() = default;
     explicit SbusData(const std::string &tag);
 

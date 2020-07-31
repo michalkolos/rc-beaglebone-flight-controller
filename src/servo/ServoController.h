@@ -8,12 +8,19 @@
 
 #include "../worker/WorkerThread.h"
 #include "../data/CraftState.h"
+#include "../data/ServoData.h"
 
 class ServoController : public WorkerThread{
 private:
-    CraftState& craftState;
+    ServoData* servoData;
+    void task() override;
+    void cleanup() override;
 public:
-    ServoController(bool startWorker, CraftState &craftState);
+    explicit ServoController(CraftState &craftState,
+         int channelNo = 8,
+         int pulseFreq = 50,
+         int minPosUs = -1,
+         int maxPosUs = -1);
 
 };
 

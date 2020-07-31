@@ -11,17 +11,37 @@
 
 class ServoData : public GenericData{
 private:
-    static const int CHANNELS_NO = 8;
-    static const int NEUTRAL_POS = 500;
-    static const int MIN_POS = 0;
-    static const int MAX_POS = 1000;
+    static const int MAX_CHANNELS_NO = 8;
+    static const int DEFAULT_FREQ = 8;
+    constexpr static const float NEUTRAL_POS_NORMALIZED = 0.5;
 
-    std::array<int, CHANNELS_NO> channels{};
+    int channelsNo;
+    int pulseFreq;
+    int minPosUs = 1000;
+    int maxPosUs = 2000;
+
+    bool interfaceRunning = false;
+    std::array<float, MAX_CHANNELS_NO> channels{};
+
 
 public:
-    ServoData();
-    int getChannel(int channelNo);
-    void setChannel(int channelNo, int val);
+    explicit ServoData(int channelsNo = MAX_CHANNELS_NO, int pulseFreq = DEFAULT_FREQ);
+
+    float getChannel(int channelNo);
+    void setChannel(int channelNo, float val);
+
+    void setRange(int minPosUs, int maxPosUs);
+    bool isInterfaceRunning() const;
+    void setInterfaceRunning(bool interfaceRunning);
+    int getMinPosUs() const;
+    int getMaxPosUs() const;
+    int getChannelsNo() const;
+    void setChannelsNo(int channelsNo);
+    int getPulseFreq() const;
+    void setPulseFreq(int pulseFreq);
+
+
+    std::string toString();
 };
 
 

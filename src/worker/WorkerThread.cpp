@@ -18,7 +18,7 @@ bool WorkerThread::startThread() {
 }
 
 bool WorkerThread::stopThread() {
-
+    cleanup();
     threadRunning = false;
 
     return true;
@@ -31,5 +31,9 @@ WorkerThread::WorkerThread(bool startWorker) {
 WorkerThread::~WorkerThread() {
     stopThread();
     workerThread.join();
+}
+
+void WorkerThread::cleanup() {
+
 }
 

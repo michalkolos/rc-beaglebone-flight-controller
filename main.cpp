@@ -7,6 +7,9 @@
 #include "src/interfaces/SerialConnection.h"
 #include "src/nav/sbus/SbusSerialConnection.h"
 #include "src/utils/Utils.h"
+#include "src/servo/ServoController.h"
+#include "src/data/ServoData.h"
+#include "src/director/SimpleDirector.h"
 
 
 const std::string COMPASS_DEVICE_FILE = "/dev/i2c-1";
@@ -22,11 +25,18 @@ int main() {
 //    SerialData serialData;
 
     CraftState craftState;
+
+
     GpsSerialConnection gpsSerialConnection(craftState,
             "/dev/ttyO1", 115200, true);
 
     SbusSerialConnection sbusSerialConnection(craftState,
             "/dev/ttyO2", true);
+
+    ServoController servoController(craftState, 8, 50, 800, 2200);
+
+    SimpleDirector simpleDirector(craftState);
+
 
 //    sbusSerialConnection.debug();
 
@@ -36,12 +46,13 @@ int main() {
 
     SbusData* sbusData = (SbusData*)craftState.getDataByTag("SBUS");
     GpsData* gpsData = (GpsData*)craftState.getDataByTag("GPS");
-
+    ServoData* servoData = (ServoData*)craftState.getDataByTag("SERVO");
 
     while(true){
 
         std::cout << sbusData->toString() << std::endl;
         std::cout << gpsData->toString() << std::endl;
+        std::cout << servoData->toString() << std::endl;
         Utils::sleep_ms(100);
 
 
