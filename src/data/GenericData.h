@@ -25,6 +25,9 @@ public:
     void setTag(const std::string &tag);
     std::string toString() const;
 
+    void takeResource();
+    void releaseResource();
+
 };
 
 #endif //RC_BEAGLEBONE_FLIGHT_CONTROLLER_GENERICDATA_H

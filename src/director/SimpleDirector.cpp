@@ -9,6 +9,8 @@ SimpleDirector::SimpleDirector(CraftState &craftState, bool startWorker)
         : GenericDirector(craftState, "SIMPLE_DIRECTOR", startWorker) {}
 
 void SimpleDirector::task() {
+
+
     float servoVal = sbusToServo(sbusData->getChannels()[2], sbusData->MAX_CH_VAL);
     servoData->setChannel(0, servoVal);
     Utils::sleep_ms(20);

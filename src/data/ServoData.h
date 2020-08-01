@@ -10,10 +10,13 @@
 #include "GenericData.h"
 
 class ServoData : public GenericData{
-private:
+public:
     static const int MAX_CHANNELS_NO = 8;
-    static const int DEFAULT_FREQ = 8;
+    static const int DEFAULT_FREQ = 50;
     constexpr static const float NEUTRAL_POS_NORMALIZED = 0.5;
+
+private:
+
 
     int channelsNo;
     int pulseFreq;
@@ -29,6 +32,11 @@ public:
 
     float getChannel(int channelNo);
     void setChannel(int channelNo, float val);
+
+    std::array<float, MAX_CHANNELS_NO> &getChannels();
+
+    void setChannels(const std::array<float, MAX_CHANNELS_NO> &channels);
+
 
     void setRange(int minPosUs, int maxPosUs);
     bool isInterfaceRunning() const;

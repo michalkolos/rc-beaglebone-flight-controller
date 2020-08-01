@@ -9,7 +9,9 @@ GpsData::GpsData(const std::string &tag) : GenericData(tag) {}
 
 
 std::string GpsData::toString() {
-    accessMutex.lock();
+//    accessMutex.lock();
+    takeResource();
+
     std::string outputString = GenericData::toString();
     outputString += "t: " + std::to_string(fields.satelliteTime)
             + "/d: " + std::to_string(fields.date)
@@ -20,7 +22,9 @@ std::string GpsData::toString() {
             + "/crs: " + std::to_string(fields.courseOverGround)
             + "/#sats: " + std::to_string(fields.numberOfSatellitesUsed)
             + "/hdop: " + std::to_string(fields.hdop);
-    accessMutex.unlock();
+
+//    accessMutex.unlock();
+    releaseResource();
 
     return outputString;
 }
@@ -124,14 +128,14 @@ std::string GpsData::toString() {
 //}
 
 
-const GpsFields &GpsData::getFields() const {
+GpsFields &GpsData::getFields() {
     return fields;
 }
 
 void GpsData::setFields(const GpsFields &fields) {
-    accessMutex.lock();
+//    accessMutex.lock();
     GpsData::fields = fields;
-    accessMutex.unlock();
+//    accessMutex.unlock();
 }
 
 

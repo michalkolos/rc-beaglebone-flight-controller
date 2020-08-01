@@ -18,20 +18,20 @@ float ServoData::getChannel(int channelNo) {
 }
 
 void ServoData::setChannel(int channelNo, float val) {
-    accessMutex.lock();
+    takeResource();
     if(val <= 1 && val >= 0){
         channels[channelNo] = val;
     }
-    accessMutex.unlock();
+    releaseResource();
 }
 
 void ServoData::setRange(int minPosUs, int maxPosUs) {
-    accessMutex.lock();
+    takeResource();
     if(minPosUs >= 0 && maxPosUs >= 0 && maxPosUs > minPosUs) {
         this->minPosUs = minPosUs;
         this->maxPosUs = maxPosUs;
     }
-    accessMutex.unlock();
+    releaseResource();
 }
 
 bool ServoData::isInterfaceRunning() const {
@@ -87,6 +87,14 @@ std::string ServoData::toString() {
     accessMutex.unlock();
 
     return outputString;
+}
+
+std::array<float, ServoData::MAX_CHANNELS_NO> &ServoData::getChannels() {
+    return channels;
+}
+
+void ServoData::setChannels(const std::array<float, MAX_CHANNELS_NO> &channels) {
+    ServoData::channels = channels;
 }
 
 

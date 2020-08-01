@@ -21,7 +21,7 @@ std::string SbusData::toString() {
     const int VALUE_LENGTH = 5;
     const char PADDING_SIGN = ' ';
 
-    accessMutex.lock();
+    takeResource();
 
     std::string returnString = GenericData::toString();
     std::string valueString;
@@ -35,7 +35,7 @@ std::string SbusData::toString() {
         returnString += valueString;
     }
 
-    accessMutex.unlock();
+    releaseResource();
 
     return returnString;
 }

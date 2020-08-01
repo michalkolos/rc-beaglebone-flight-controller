@@ -9,6 +9,7 @@
 #include <rc/time.h>
 #include "ServoController.h"
 
+//  TODO: Handle possible exceptions thrown by the robot library.
 
 ServoController::ServoController(CraftState &craftState, int channelNo,
                                  int pulseFreq, int  minPosUs, int maxPosUs) :
@@ -37,9 +38,14 @@ ServoController::ServoController(CraftState &craftState, int channelNo,
 
 void ServoController::task() {
     if(servoData->isInterfaceRunning()){
+
+        servoData->takeResource();
+        std::array<float, ServoData::MAX_CHANNELS_NO>& channels = servoData->getChannels();
         for(int i = 0; i < servoData->getChannelsNo(); i++){
-            rc_servo_send_esc_pulse_normalized(i + 1, servoData->getChannel(i));
+            rc_servo_send_esc_pulse_normalized(i + 1, channels[i]);
         }
+        servoData->releaseResource();
+
         rc_usleep(1000000/servoData->getPulseFreq());
     }
 }

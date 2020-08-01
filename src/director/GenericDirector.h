@@ -19,6 +19,8 @@ protected:
     ServoData* servoData;
     SbusData* sbusData;
 
+
+
     GenericDirector(CraftState &craftState, std::string directorTag, bool startWorker = true);
     GenericData* loadData(CraftState &craftState, const std::string& tag);
     void task() override = 0;

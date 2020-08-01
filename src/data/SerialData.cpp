@@ -9,6 +9,8 @@ void SerialData::record(std::string& newData) {
 }
 
 std::string SerialData::toString() {
+
+
     std::string outputString = GenericData::toString();
     outputString += data;
     return outputString;

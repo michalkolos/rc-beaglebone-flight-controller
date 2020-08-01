@@ -29,7 +29,7 @@ add_executable(rc_beaglebone_flight_controller
         src/worker/WorkerThread.cpp src/worker/WorkerThread.h
         src/data/ServoData.cpp src/data/ServoData.h
         src/director/GenericDirector.cpp src/director/GenericDirector.h
-        src/director/SimpleDirector.cpp src/director/SimpleDirector.h)
+        src/director/SimpleDirector.cpp src/director/SimpleDirector.h src/director/DIRECTOR_SETTINGS.h)
 
 
 target_link_libraries(rc_beaglebone_flight_controller Threads::Threads)

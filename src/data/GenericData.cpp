@@ -30,6 +30,14 @@ void GenericData::setTag(const std::string &tag) {
     GenericData::tag = tag;
 }
 
+void GenericData::takeResource() {
+    accessMutex.lock();
+}
+
+void GenericData::releaseResource() {
+    accessMutex.unlock();
+}
+
 
 
 

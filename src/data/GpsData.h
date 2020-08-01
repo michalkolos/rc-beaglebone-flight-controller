@@ -34,7 +34,7 @@ public:
     explicit GpsData(const std::string &tag);
 
 
-    const GpsFields &getFields() const;
+    GpsFields &getFields();
     void setFields(const GpsFields &fields);
 
     std::string toString();

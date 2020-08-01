@@ -52,15 +52,15 @@ bool SbusSerialConnection::readSbusFrame() {
      return true;
  }
 
-
+// TODO: Create lost SBUS frames counter.
 
 bool SbusSerialConnection::sbusParse() {
 
+    sbusData->takeResource();
+    std::array<uint16_t, _numChannels>& channels = sbusData->getChannels();
 
-//    sbusData->getExclusiveAccess();
-//    std::array<uint16_t, _numChannels>& channels = sbusData->getChannels();
 
-    std::array<uint16_t, _numChannels> channels;
+//    std::array<uint16_t, _numChannels> channels;
 
     channels[0]  = (uint16_t) ((frame[0]       | frame[1] << 8)                     & 0x07FF) - 172;
     channels[1]  = (uint16_t) ((frame[1] >> 3  | frame[2] << 5)                     & 0x07FF) - 172;
@@ -102,14 +102,15 @@ bool SbusSerialConnection::sbusParse() {
 
     if (frame[22] & _sbusLostFrame) {
         channels[LOST_FRAME] = 1;
+        sbusData->releaseResource();
         return -1;
     } else {
         channels[LOST_FRAME] = 0;
     }
 
-//    channelsMutex.unlock();
-//    sbusData->releaseExclusiveAccess();
-    sbusData->setChannels(channels);
+    sbusData->releaseResource();
+
+//    sbusData->setChannels(channels);
     return true;
 }
 
