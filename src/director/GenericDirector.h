@@ -24,6 +24,9 @@ protected:
     GenericDirector(CraftState &craftState, std::string directorTag, bool startWorker = true);
     GenericData* loadData(CraftState &craftState, const std::string& tag);
     void task() override = 0;
+
+    void setServoFromSbus(int servo, int sbus,
+                          bool reverse = false, float lowRate = 1.0, float highRate = 1.0);
 };
 
 

@@ -31,3 +31,22 @@ GenericData* GenericDirector::loadData(CraftState &craftState, const std::string
     return loadedData;
 }
 
+void GenericDirector::setServoFromSbus(int servo, int sbus, bool reverse, float lowRate, float highRate) {
+    float servoVal = (float)sbusData->getChannels()[sbus] / (float)sbusData->MAX_CH_VAL;
+
+    if(reverse){ servoVal = 1.0 - servoVal; }
+
+    if(lowRate < 1.0 || highRate < 1.0) {
+        if (servoVal < 0.5) {
+            servoVal += (0.5 + servoVal) * lowRate;
+        }else if( servoVal > 0.5){
+            servoVal -= (servoVal - 0.5) * lowRate;
+        }
+    }
+
+    if(servoVal > 1.0){ servoVal = 1.0; }
+    if(servoVal < 0.0){ servoVal = 0.0; }
+
+    servoData->setChannel(servo, servoVal);
+}
+

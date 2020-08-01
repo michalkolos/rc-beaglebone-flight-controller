@@ -8,7 +8,7 @@ ServoData::ServoData(int channelsNo, int pulseFreq) :
     channelsNo(channelsNo), pulseFreq(pulseFreq), GenericData("SERVO") {
 
     for(float & channel : channels){
-        channel = NEUTRAL_POS_NORMALIZED;
+        channel = 0.5;
     }
 }
 

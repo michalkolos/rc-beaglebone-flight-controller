@@ -13,7 +13,6 @@ class ServoData : public GenericData{
 public:
     static const int MAX_CHANNELS_NO = 8;
     static const int DEFAULT_FREQ = 50;
-    constexpr static const float NEUTRAL_POS_NORMALIZED = 0.5;
 
 private:
 
