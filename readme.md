@@ -4,6 +4,7 @@
 * Implemented reading Sbus frames from RC radio receiver connected to one of the UART 
 interfaces.
 * Reading GPS position data by parsing NMEA messages sent through UART by a GPS module.
+* Adjusting postions of flight planes by issuing commands to servomotors that actuate them.
 
 
 ## Software dependencies:
