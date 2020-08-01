@@ -10,6 +10,9 @@ interfaces.
 [Robot Control library](http://www.strawsondesign.com/docs/librobotcontrol/group___servo.html#gabcde569afc59522a776c00a3cf38de7f) 
 must be installed on the Beaglebone board.
 
+## Build info:
+In order for the servo controlls to work, controller nedds to have root privileges.
+
 ## Used hardware:
 * [Beaglebone blue](https://beagleboard.org/p/products/beaglebone-blue)
 * [Beitian BS-880](http://www.sz-beitian.com/ProductsDetail?product_id=921) GPS module
